@@ -10,12 +10,17 @@ import ddf.minim.analysis.*;
 
 import peasy.*;
 
+import themidibus.*; 
+
 // ================================================================
 
 Minim minim;
 AudioInput audio;
 FFT audioFFT;
 PeasyCam cam;
+MidiBus myBus; 
+
+
 color[] colors_1 = new color[5];
 
 // ================================================================
@@ -36,7 +41,6 @@ float x;
 float y;
 float z;
 float _r;
-int bounce;
 int rects;
 
 int alpha;
@@ -45,8 +49,18 @@ float grid;
 float area;
 boolean selector;
 
-int changes;
 float target;
+
+// ================================================================
+
+int knob1 = 0; int knob1b = 0;
+int knob2 = 0; int knob2b = 0;
+int knob3 = 0; int knob3b = 0;
+int knob4 = 0; int knob4b = 0;
+int knob5 = 0; int knob5b = 0;
+int knob6 = 0; int knob6b = 0;
+int knob7 = 0; int knob7b = 0;
+int knob8 = 0; int knob8b = 0;
 
 // ================================================================
 
@@ -58,74 +72,58 @@ void settings(){
 
 void setup() {
 	background(bgC);
-
 	audioSettings();
 	camSettings();
 	obectSettings();
+	midiSetup();
 }	
 
 // ================================================================
 
-void audioSettings(){
-	minim = new Minim(this);
-  audio = minim.getLineIn(Minim.STEREO);
+void controllerChange(int channel, int number, int value) {  
 
-	audioFFT = new FFT(audio.bufferSize(), audio.sampleRate());
-	audioFFT.linAverages(audioRange);
+	midiUpdate(channel, number, value);
 
-  audioFFT.window(FFT.NONE);
-  // audioFFT.window(FFT.BARTLETT);
-  // audioFFT.window(FFT.BARTLETTHANN);
-  // audioFFT.window(FFT.BLACKMAN);
-  // audioFFT.window(FFT.COSINE);
-  // audioFFT.window(FFT.GAUSS);
-  // audioFFT.window(FFT.HAMMING);
-  // audioFFT.window(FFT.HANN);
-  // audioFFT.window(FFT.LANCZOS);
-  // audioFFT.window(FFT.TRIANGULAR);
-}
-
-void camSettings(){
-	cam = new PeasyCam(this, 1200);
-	cam.rotateX(35);
-	cam.rotateY(45);
-}
-
-void obectSettings(){
-	rects = 4;	
-	colors_1[0] = #ed6b5a;
-	colors_1[1] = #f4f1bc;
-	colors_1[2] = #9bc1bb;
-	colors_1[3] = #5aa3a8;
-	colors_1[4] = #e5eade;
+  // Receive a controllerChange
+  // println();
+  // println("Controller Change:");
+  // println("--------");
+  // println("Channel:" + channel);
+  // println("Number:" + number);
+  // println("Value:" + value);
 }
 
 // ================================================================
+
+void noteOn(int channel, int pitch, int velocity) {
+    println(channel, pitch, velocity);
+}
+
+// ================================================================
+
 void draw() {
 	background(bgC);
 	audioDataUpdate();
 	objectRender(audioRange, audioData);
+	
+	// println("knob1 - " + knob1);
+	// println("knob2 - " + knob2);
+	// println("knob3 - " + knob3);
+	// println("knob4 - " + knob4);
+	// println("knob5 - " + knob5);
+	// println("knob6 - " + knob6);
+	// println("knob7 - " + knob7);
+	// println("knob8 - " + knob8);
+	// println("knob1b - " + knob1b);
+	// println("knob2b - " + knob2b);
+	// println("knob3b - " + knob3b);
+	// println("knob4b - " + knob4b);
+	// println("knob5b - " + knob5b);
+	// println("knob6b - " + knob6b);
+	// println("knob7b - " + knob7b);
+	// println("knob8b - " + knob8b);
+
 }
-
-// ================================================================
-
-void audioDataUpdate(){
-	audioFFT.forward(audio.mix);
-	updateAudio();
-}
-
-// ================================================================
-
-	void updateAudio(){
-		for (int i = 0; i < audioRange; ++i) {
-			float indexAvg = (audioFFT.getAvg(i) * audioAmp) * audioIndexAmp;
-			float indexCon = constrain(indexAvg, 0, audioMax);
-			audioData[i] = indexCon;
-			audioIndexAmp += audioIndexStep;
-		}
-
-		audioIndexAmp = audioIndex;
-	}
 
 // ================================================================
 
@@ -135,5 +133,4 @@ void stop() {
 	super.stop();
 }
 
-// ================================================================
 
