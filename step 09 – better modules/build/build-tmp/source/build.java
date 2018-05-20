@@ -218,8 +218,8 @@ public void midiMonitor(){
 	println(knobTable);
 }
 
+int Y_AXIS = 1;
 int[] colors_1 = new int[5];
-
 // ================================================================
 
 float x;
