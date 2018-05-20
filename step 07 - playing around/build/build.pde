@@ -25,7 +25,7 @@ color[] colors_1 = new color[5];
 
 // ================================================================
 
-int audioRange 	= 4;
+int audioRange 	= 8;
 int audioMax = 100;
 
 float audioAmp = 2200.0;
@@ -46,7 +46,9 @@ int rects;
 int alpha;
 float dist;
 float grid;
-float area;
+float areaI;
+float areaJ;
+float areaK;
 boolean selector;
 
 float target;
@@ -97,11 +99,13 @@ void noteOn(int channel, int pitch, int velocity) {
 // ================================================================
 
 void draw() {
-	background(bgC);
 	audioDataUpdate();
 	audioMidiValueUpdate();
-	objectRender(audioRange, audioData);
 	camUpdate();
+	
+	color alphaBg = (int)map(knob[15], 0, 100, 0, 255);
+	background(bgC, alphaBg);
+	objectRender(audioRange, audioData);
 	
 	// midiMonitor();
 }

@@ -19,8 +19,8 @@ import java.io.IOException;
 
 public class build extends PApplet {
 
-int stageW      = 700;
-int stageH      = 700;
+int stageW      = 900;
+int stageH      = 900;
 int bgC       = 0xff2F2F2F;
 String dataPATH = "../../data/";
 
@@ -46,7 +46,7 @@ int[] colors_1 = new int[5];
 
 // ================================================================
 
-int audioRange 	= 4;
+int audioRange 	= 12;
 int audioMax = 100;
 
 float audioAmp = 2200.0f;
@@ -118,11 +118,13 @@ public void noteOn(int channel, int pitch, int velocity) {
 // ================================================================
 
 public void draw() {
-	background(bgC);
 	audioDataUpdate();
 	audioMidiValueUpdate();
-	objectRender(audioRange, audioData);
 	camUpdate();
+
+	// color alphaBg = (int)map(knob[15], 0, 100, 0, 255);
+	background(bgC);
+	objectRender(audioRange, audioData);
 	
 	// midiMonitor();
 }
@@ -178,12 +180,12 @@ public void audioDataUpdate(){
   // ================================================================
   
   public void audioMidiValueUpdate(){
-    audioAmp = map(knob[5], 0, 100, 0, 600);
-    audioIndex = map(knob[6], 0, 100, 0, 100);
-    audioIndexStep = map(knob[7], 0, 100, 0, 1000);
+    audioAmp = map(knob[5], 0, 100, 10, 60);
+    audioIndex = map(knob[6], 0, 100, 50, 100);
+    audioIndexStep = map(knob[7], 0, 100, 2.5f, 100);
   }
 public void camSettings(){
-	cam = new PeasyCam(this, 1200);
+	cam = new PeasyCam(this, 1200 * -40 );
 	cam.rotateX(35);
 	cam.rotateY(45);
 }
@@ -192,8 +194,7 @@ public void camUpdate(){
 	cam.rotateX((float)knob[0] / 1000);
 	cam.rotateY((float)knob[1] / 1000);
 	cam.rotateZ((float)knob[2] / 1000);
-	cam.setDistance(map(knob[3], 0, 100, 100, 1200));
-	println("knob[3]: "+knob[3]);
+	// cam.setDistance((float)map(knob[3], 0, 100, 100.0, -1200.0));
 }
 public void midiSetup(){
   MidiBus.list(); 
@@ -224,7 +225,8 @@ public void midiMonitor(){
 	println(knobTable);
 }
 public void obectSettings(){
-	rects = 4;	
+	rects = (int)map(audioData[6], 0, 100, 2, 12);	
+
 	colors_1[0] = 0xffed6b5a;
 	colors_1[1] = 0xfff4f1bc;
 	colors_1[2] = 0xff9bc1bb;
@@ -235,19 +237,20 @@ public void obectSettings(){
 // ================================================================
 
 public void objectRender(int range, float[] values){
+	rects = (int)map(audioData[6], 0, 100, 2, 12);	
 
 	for (int i = 1; i < rects; ++i) {
 		for (int j = 1; j < rects; ++j) {
 			for (int k = 1; k < rects; ++k) {
 
+				int indexSize = ((k + j + i) % (audioRange - 1));
 				int indexCol = ((k + j + i) % 4);
-				int index = ((k + j + i) % range);
 				int fgC = colors_1[indexCol];
 
 				selector = ((k + j + i) % 2 == 1);
 
-				_r = (float)knob[8] + values[index];
-				dist = 25.0f;
+				_r = (float)knob[8] + audioData[indexSize];
+				dist = map(knob[10], 0, 100, -25, 50) + map(audioData[4], 0, 100, 25, 50);
 				grid = dist + _r;
 				area = (_r + grid) * rects;
 				
@@ -255,10 +258,10 @@ public void objectRender(int range, float[] values){
 				y = map(j * _r, 0, rects * _r, -area, area);
 				z = map(k * _r, 0, rects * _r, -area, area);
 
-				alpha = 255;
 				target = selector ? z : y;
 
-				int detail = (int)map(knob[9], 0, 100, 3, 60);
+				// int detail = (int)map(knob[9], 0, 100, 3, 60);
+				int detail = (int)map(audioData[5], 0, 100, 3, 8);
 
 				pushMatrix();
 					 translate(x, y, z);

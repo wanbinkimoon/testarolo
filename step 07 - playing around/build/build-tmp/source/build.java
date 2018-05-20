@@ -46,7 +46,7 @@ int[] colors_1 = new int[5];
 
 // ================================================================
 
-int audioRange 	= 4;
+int audioRange 	= 8;
 int audioMax = 100;
 
 float audioAmp = 2200.0f;
@@ -118,11 +118,13 @@ public void noteOn(int channel, int pitch, int velocity) {
 // ================================================================
 
 public void draw() {
-	background(bgC);
 	audioDataUpdate();
 	audioMidiValueUpdate();
-	objectRender(audioRange, audioData);
 	camUpdate();
+	
+	int alphaBg = (int)map(knob[15], 0, 100, 0, 255);
+	background(bgC, alphaBg);
+	objectRender(audioRange, audioData);
 	
 	// midiMonitor();
 }
@@ -183,7 +185,7 @@ public void audioDataUpdate(){
     audioIndexStep = map(knob[7], 0, 100, 0, 1000);
   }
 public void camSettings(){
-	cam = new PeasyCam(this, 1200);
+	cam = new PeasyCam(this, 120000 * 10);
 	cam.rotateX(35);
 	cam.rotateY(45);
 }
@@ -192,8 +194,7 @@ public void camUpdate(){
 	cam.rotateX((float)knob[0] / 1000);
 	cam.rotateY((float)knob[1] / 1000);
 	cam.rotateZ((float)knob[2] / 1000);
-	cam.setDistance(map(knob[3], 0, 100, 100, 1200));
-	println("knob[3]: "+knob[3]);
+	cam.setDistance(map(knob[3], 0, 100, 100, -120000));
 }
 public void midiSetup(){
   MidiBus.list(); 
@@ -224,7 +225,7 @@ public void midiMonitor(){
 	println(knobTable);
 }
 public void obectSettings(){
-	rects = 4;	
+	rects = 16;	
 	colors_1[0] = 0xffed6b5a;
 	colors_1[1] = 0xfff4f1bc;
 	colors_1[2] = 0xff9bc1bb;
@@ -241,13 +242,12 @@ public void objectRender(int range, float[] values){
 			for (int k = 1; k < rects; ++k) {
 
 				int indexCol = ((k + j + i) % 4);
-				int index = ((k + j + i) % range);
 				int fgC = colors_1[indexCol];
 
 				selector = ((k + j + i) % 2 == 1);
 
-				_r = (float)knob[8] + values[index];
-				dist = 25.0f;
+				_r = (float)knob[8] + values[6];
+				dist = map(audioData[4], 0, 100, 25, 50);
 				grid = dist + _r;
 				area = (_r + grid) * rects;
 				
@@ -258,7 +258,8 @@ public void objectRender(int range, float[] values){
 				alpha = 255;
 				target = selector ? z : y;
 
-				int detail = (int)map(knob[9], 0, 100, 3, 60);
+				// int detail = (int)map(knob[9], 0, 100, 3, 60);
+				int detail = (int)map(audioData[5], 0, 100, 3, 8);
 
 				pushMatrix();
 					 translate(x, y, z);

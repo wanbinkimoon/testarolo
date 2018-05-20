@@ -1,5 +1,5 @@
-int stageW      = 700;
-int stageH      = 700;
+int stageW      = 900;
+int stageH      = 900;
 color bgC       = #2F2F2F;
 String dataPATH = "../../data/";
 
@@ -25,7 +25,7 @@ color[] colors_1 = new color[5];
 
 // ================================================================
 
-int audioRange 	= 4;
+int audioRange 	= 12;
 int audioMax = 100;
 
 float audioAmp = 2200.0;
@@ -97,11 +97,13 @@ void noteOn(int channel, int pitch, int velocity) {
 // ================================================================
 
 void draw() {
-	background(bgC);
 	audioDataUpdate();
 	audioMidiValueUpdate();
-	objectRender(audioRange, audioData);
 	camUpdate();
+
+	// color alphaBg = (int)map(knob[15], 0, 100, 0, 255);
+	background(bgC);
+	objectRender(audioRange, audioData);
 	
 	// midiMonitor();
 }
