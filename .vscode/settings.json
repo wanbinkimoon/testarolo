@@ -1,0 +1,60 @@
+{
+  "java.dependency.packagePresentation": "hierarchical",
+  "workbench.colorTheme": "Predawn",
+  "todohighlight.keywords": [{
+      "text": "CHECK:",
+      "color": "#F4D03F",
+      "backgroundColor": "#363636",
+      "isWholeLine": true,
+      "overviewRulerColor": "pink"
+    },
+    {
+      "text": "NOTE:",
+      "color": "#AED6F1",
+      "backgroundColor": "#363636",
+      "isWholeLine": true,
+    },
+    {
+      "text": "RESULT:",
+      "color": "#00ff7f",
+      "backgroundColor": "#363636",
+      "isWholeLine": true,
+    },
+    {
+      "text": "INFO:",
+      "color": "#E5E7E9",
+      "backgroundColor": "#363636",
+      "isWholeLine": true,
+    },
+    {
+      "text": "HACK:",
+      "color": "orange",
+      "backgroundColor": "#363636",
+      "isWholeLine": true,
+    },
+    {
+      "text": "WARN:",
+      "color": "gold",
+      "backgroundColor": "#363636",
+      "isWholeLine": true,
+    },
+    {
+      "text": "DATAMAP:",
+      "color": "#4FFFFF",
+      "backgroundColor": "#363636",
+      "isWholeLine": true,
+    },
+    {
+      "text": "STEP:",
+      "color": "#D2B4DE",
+      "backgroundColor": "#363636",
+      "isWholeLine": true,
+    },
+    {
+      "text": "TODO:",
+      "color": "#E74C3C",
+      "backgroundColor": "#503635",
+      "isWholeLine": true,
+    },
+  ],
+}
